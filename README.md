@@ -44,6 +44,6 @@ To Convert Json Schema to model plugin can be used
 
 ### URL 
 
-- [Application Swagger](https://warehouse-kb3lmrg37a-lz.a.run.app/swagger-ui/)
+- [Application Swagger](https://warehouse-kb3lmrg37a-lz.a.run.app/swagger-ui/) - Initial request will take time due to Cold start in Google Run. If you see any error in swagger html page, try deleting cookies for that url, and it will work
 - curl --location --request POST 'https://warehouse-kb3lmrg37a-lz.a.run.app/products/upload' \
 --form 'file=@"/Users/raviparekh/Documents/warehouse/src/main/resources/schema/products.json"'
