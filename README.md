@@ -13,7 +13,8 @@ For further reference, please consider the following sections:
 * [Github Pipeline with GCP Run - warehouse.yml](https://github.com/ingka-group-digital/myhouse/)
 
 ### Monorepo
-Microservice related to this application should be resided in this GitHub monorepo
+Microservice related to this application should be resided in this GitHub monorepo, the only problem with this monorepo is 'per-project access control'
+- [Monorepo advantage and limitation](https://en.wikipedia.org/wiki/Monorepo)
 
 ### Microservice Architect
 - Some component and utility can be moved to Common Component which can be used as dependency, which has not been done yet e.g. GlobalExceptionHandler.java, *Enum.java to Common
@@ -33,6 +34,12 @@ To Convert Json Schema to model plugin can be used
 - Internationalization i18n is done, see resources/messages for ERROR handling
 - In the Future, message translation can be taken to Phrase and Config Server so deployment in zero downtime
 - Automated Sync between Phrase app and git should be done via script(hook)
+
+### Testing
+- Integration testing with in memory real time POSTGRES Db (test container) 
+```
+mvn clean verify
+```
 
 ### Future implementation
 - [R2DBC - reactive non-blocking programming APIs to relational databases]()
