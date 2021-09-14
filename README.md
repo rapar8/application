@@ -22,7 +22,7 @@ Microservice related to this application should be resided in this GitHub monore
 ### Caching
 - ~~Used spring method cache and etag for performance and reduce further hits to DB~~ _Due to lack of time_
 - Used materialized view in postgres to store/update the stocks sold and brought in once so need to hit the DB each time to
- available stocks until product sold out
+ available stocks until product sold out [Postgres materialized view](https://www.postgresql.org/docs/current/rules-materializedviews.html)
 
 ### Json Schema to Model
 To Convert Json Schema to model plugin can be used
