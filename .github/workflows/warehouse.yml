@@ -1,0 +1,73 @@
+name:  Deploy to Google Run
+
+on:
+  push:
+    paths: 
+    - 'warehouse/**'
+
+env:
+  PROJECT_ID: ingka-eu-salesassistant-dev
+  PROJECT: ingka-eu-salesassistant-dev
+  IMAGE: gcr.io/ingka-eu-salesassistant-dev/warehouse
+  WORK_DIR: ./warehouse/
+  
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    environment: devlopment
+
+    steps:
+    - run: |
+            pwd
+            
+    - name: Checkout
+      uses: actions/checkout@v2
+        
+
+    # Setup gcloud CLI
+    - name: Setup gcloud CLI
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: 329.0.0
+        service_account_key: ${{ secrets.GCP_CREDENTIAL }}
+        project_id: ${{ env.PROJECT }}
+        export_default_credentials: true
+        
+    - name: print evn
+      env:
+          WORK_DIR: ${{env.WORK_DIR}}
+          PROJECT: ${{ env.PROJECT }}
+      run: |
+        echo $WORK_DIR 
+        echo $DEBUG_SECRET_KEY 
+    # Configure Docker to use the gcloud command-line tool as a credential
+    # helper for authentication
+
+    - run: gcloud info
+    - run: gcloud components install beta 
+    - run: gcloud auth configure-docker -q
+    - run: gcloud version
+    - run: |
+            pwd
+  # Build the maven image
+    - name: Setup Java
+      uses: actions/setup-java@v1     
+      with:        
+        java-version: 16
+        
+    - name: Building|Packaging jar
+      working-directory: ${{env.WORK_DIR}}    
+      run: |
+            mvn clean package
+    # Build the Docker image
+    - name: Build & Push
+      working-directory: ${{env.WORK_DIR}}    
+      run: |-
+         docker build -t $IMAGE:$GITHUB_SHA .
+         docker push $IMAGE:$GITHUB_SHA
+     
+        
+    - name: Deploy Docker image
+      run: gcloud run deploy warehouse --project $PROJECT --image $IMAGE:$GITHUB_SHA --region europe-north1 --platform managed --allow-unauthenticated

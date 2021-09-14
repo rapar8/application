@@ -1,0 +1,43 @@
+application:
+  message-sources: classpath:messages/msg
+  allowed-origins:
+log4j.logger.org: INFO
+logging:
+  level:
+    org:
+      apache:
+        http: DEBUG
+    root: INFO
+spring:
+  datasource:
+    url: jdbc:postgresql:///postgres?cloudSqlInstance=ingka-eu-salesassistant-dev:europe-west3:salesassistant&socketFactory=com.google.cloud.sql.postgres.SocketFactory&user=postgres&password=****
+    #url: jdbc:postgresql://10.181.64.9:5432/postgres?stringtype=unspecified&currentSchema=testravi
+    username: postgres
+    password: ****
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        default_schema: testravi
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        format_sql: false
+    show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 3MB
+      max-request-size: 3MB
+  sql:
+    init:
+      mode: always
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: https://login.microsoftonline.com/720b637a-****-40cf-816a-****/v2.0
+#          jwk-set-uri: https://login.microsoftonline.com/720b637a-****-40cf-816a-***/discovery/v2.0/keys
+server:
+  error:
+    include-message: always
